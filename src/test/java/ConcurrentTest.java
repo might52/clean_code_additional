@@ -1,3 +1,5 @@
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -31,7 +33,7 @@ public class ConcurrentTest {
             );
         }
         tasks.forEach(exec::submit);
-        exec.awaitTermination(5, TimeUnit.SECONDS);
+        exec.awaitTermination(5, SECONDS);
         exec.shutdownNow();
     }
 
@@ -57,7 +59,7 @@ public class ConcurrentTest {
                 System.out.println("Something went wrong during execution process: " + e.getCause());
             }
         });
-        exec.awaitTermination(5, TimeUnit.SECONDS);
+        exec.awaitTermination(5, SECONDS);
         exec.shutdownNow();
     }
 
@@ -84,9 +86,35 @@ public class ConcurrentTest {
                 System.out.println("Something went wrong during execution process: " + e.getCause());
             }
         });
-        exec.awaitTermination(5, TimeUnit.SECONDS);
+        exec.awaitTermination(5, SECONDS);
         exec.shutdownNow();
 
+    }
+
+    @Test
+    public void invokeAllTestTasks() throws InterruptedException {
+        List<Callable<String>> tasks = new ArrayList<>();
+        for (int i = 0; i < NUMBER_OF_THREADS; i++) {
+            int finalInt = i;
+            tasks.add(() -> String.format("Callable number: {%d} with return value: {%d} %s:%d, datetime: %s",
+                finalInt, finalInt, Thread.currentThread().getName(),
+                Thread.currentThread().threadId(), System.currentTimeMillis()));
+        }
+        List<Future<String>> futureTasks = exec.invokeAll(tasks, 30, TimeUnit.SECONDS);
+        futureTasks.forEach(future -> {
+            try {
+                String value = future.get();
+                System.out.printf("Future value: %S state: %s, isDone: %s, isCancelled: %s%n", value, future.state(),
+                    future.isDone(), future.isCancelled());
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (ExecutionException e) {
+                System.out.println("Something went wrong during execution process: " + e.getCause());
+            }
+        });
+
+        exec.awaitTermination(5, SECONDS);
+        exec.shutdownNow();
     }
 
 }
