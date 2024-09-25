@@ -16,6 +16,7 @@
         <!-- test  -->
         <mockito-junit-jupiter.version>4.11.0</mockito-junit-jupiter.version>
         <mockito-core.version>4.11.0</mockito-core.version>
+
     </properties>
     <dependencies>
         <dependency>
