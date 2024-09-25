@@ -236,4 +236,15 @@ public class ConcurrentTest {
     private boolean checkMail(String host) {
         return true;
     }
+
+    @Test
+    public void addHookTest() {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                System.out.println("Shutdown hook triggered");
+            }
+        });
+        System.out.println("Shutdown hook exit");
+    }
 }
