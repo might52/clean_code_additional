@@ -2,12 +2,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ConcurrentTest {
     private static final int NUMBER_OF_THREADS = 4;
-    private static final Executor exec = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    private static final ExecutorService exec = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     private boolean isActive;
 
     @Test
@@ -31,13 +32,12 @@ public class ConcurrentTest {
     }
 
     private void startServer(List<Runnable> tasks) {
-        isActive = true;
-        while (isActive) {
-            tasks.forEach(exec::execute);
-        }
+        tasks.forEach(exec::submit);
     }
 
-    private void stopServer() {
+    private void stopServer() throws InterruptedException {
         isActive = false;
+        exec.awaitTermination(30, TimeUnit.SECONDS);
+        exec.shutdownNow();
     }
 }
