@@ -13,6 +13,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.Test;
 
 public class ConcurrentTest {
@@ -121,6 +122,25 @@ public class ConcurrentTest {
         exec.shutdownNow();
     }
 
+    // Try to check and save the interrupted exception to stop the Thread.
+    private FutureTask<Void> getNextTask(BlockingQueue<FutureTask<Void>> queue) {
+        boolean interrupted = false;
+        try {
+            while (true) {
+                try {
+                    return queue.take();
+                } catch (InterruptedException e) {
+                    interrupted = true;
+                    // skip the issue and try again.
+                }
+            }
+        } finally {
+            if (interrupted) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
     private static void timedRun(final Runnable r, long timeout, TimeUnit unit) throws InterruptedException {
         class RethrowableTask implements Runnable {
 
@@ -156,30 +176,40 @@ public class ConcurrentTest {
         task.rethrow();
     }
 
-    // Try to check and save the interrupted exception to stop the Thread.
-    private FutureTask<Void> getNextTask(BlockingQueue<FutureTask<Void>> queue) {
-        boolean interrupted = false;
+    @Test
+    public void testInterrupt() throws InterruptedException {
+        timedRun(
+            () -> System.out.printf("Callable number: {%d} with return value: {%d} %s:%d, datetime: %s%n",
+                1, 1, Thread.currentThread().getName(), Thread.currentThread().threadId(),
+                System.currentTimeMillis()),
+            10, TimeUnit.SECONDS);
+    }
+
+    private static void cancelTimedRun(final Runnable r, long timeout, TimeUnit unit) throws InterruptedException {
+        Future<?> task = exec.submit(r);
         try {
-            while (true) {
-                try {
-                    return queue.take();
-                } catch (InterruptedException e) {
-                    interrupted = true;
-                    // skip the issue and try again.
-                }
-            }
+            task.get(timeout, unit);
+        } catch (TimeoutException e) {
+            System.out.println("TimeoutException task");
+            // cancellation of the task will be perform later
+        } catch (ExecutionException e) {
+            System.out.println("ExecutionException task");
+            throw new AssertionError(e);
         } finally {
-            if (interrupted) {
-                Thread.currentThread().interrupt();
-            }
+            // close the task when it finished.
+            System.out.println("Cancelled task");
+            task.cancel(true);
         }
     }
 
     @Test
-    public void testInterrupt() throws InterruptedException {
-        timedRun(
-            () -> System.out.println(String.format("Callable number: {%d} with return value: {%d} %s:%d, datetime: %s",
-                1, 1, Thread.currentThread().getName(),
-                Thread.currentThread().threadId(), System.currentTimeMillis())), 10, TimeUnit.SECONDS);
+    public void testCancellationByTimeout() throws InterruptedException {
+        cancelTimedRun(
+            () -> System.out.printf("Callable number: {%d} with return value: {%d} %s:%d, datetime: %s%n",
+                1, 1, Thread.currentThread().getName(), Thread.currentThread().threadId(),
+                System.currentTimeMillis()),
+            10, TimeUnit.SECONDS);
     }
+
+
 }
