@@ -2,6 +2,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
@@ -9,6 +10,8 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +22,7 @@ public class ConcurrentTest {
     private static final ExecutorService cachedExec = Executors.newCachedThreadPool();
     private static final ExecutorService singleExec = Executors.newSingleThreadExecutor();
     private static final ExecutorService scheduledExec = Executors.newScheduledThreadPool(NUMBER_OF_THREADS);
+    private static final ScheduledExecutorService cancelExec = Executors.newScheduledThreadPool(NUMBER_OF_THREADS);
 
     @Test
     public void testPerTask() throws InterruptedException {
@@ -117,4 +121,65 @@ public class ConcurrentTest {
         exec.shutdownNow();
     }
 
+    private static void timedRun(final Runnable r, long timeout, TimeUnit unit) throws InterruptedException {
+        class RethrowableTask implements Runnable {
+
+            private volatile Throwable t;
+
+            public void run() {
+                try {
+                    r.run();
+                } catch (Throwable t) {
+                    this.t = t;
+                }
+            }
+
+            public void rethrow() {
+                System.out.println("Check the runtime error");
+                if (t != null) {
+                    throw new RuntimeException(t);
+                }
+            }
+        }
+
+        RethrowableTask task = new RethrowableTask();
+        final Thread taskThread = new Thread(task);
+        taskThread.start();
+        cancelExec.schedule(new Runnable() {
+            public void run() {
+                System.out.println("Perform interrupt");
+                taskThread.interrupt();
+            }
+        }, timeout, unit);
+        System.out.println("Perform joining");
+        taskThread.join(unit.toMillis(timeout));
+        task.rethrow();
+    }
+
+    // Try to check and save the interrupted exception to stop the Thread.
+    private FutureTask<Void> getNextTask(BlockingQueue<FutureTask<Void>> queue) {
+        boolean interrupted = false;
+        try {
+            while (true) {
+                try {
+                    return queue.take();
+                } catch (InterruptedException e) {
+                    interrupted = true;
+                    // skip the issue and try again.
+                }
+            }
+        } finally {
+            if (interrupted) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    @Test
+    public void testInterrupt() throws InterruptedException {
+        timedRun(
+            () -> System.out.println(String.format("Callable number: {%d} with return value: {%d} %s:%d, datetime: %s",
+                1, 1, Thread.currentThread().getName(),
+                Thread.currentThread().threadId(), System.currentTimeMillis())), 10, TimeUnit.SECONDS);
+    }
 }
