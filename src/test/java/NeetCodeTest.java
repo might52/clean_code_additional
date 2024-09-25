@@ -1,4 +1,8 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -26,4 +30,41 @@ public class NeetCodeTest {
         return new int[]{-1, -1};
     }
 
+    @Test
+    public void checkTheAnagramGroups() {
+//        String[] words = new String[]{"act", "pots", "tops", "cat", "stop", "hat"};
+//        List<List<String>> expected = new ArrayList<>();
+//        expected.add(Arrays.asList("act","cat"));
+//        expected.add(Arrays.asList("stop", "pots", "tops"));
+//        expected.add(Arrays.asList("hat"));
+//        Assertions.assertArrayEquals(expected.toArray(), getAnagramGroups(words).toArray());
+//        words = new String[]{"x"};
+//        expected.clear();
+//        expected.add(new ArrayList() {{
+//            add("x");
+//        }});
+//        Assertions.assertEquals(expected, getAnagramGroups(words));
+//        words = new String[]{""};
+//        expected.clear();
+//        expected.add(new ArrayList<>() {{
+//            add("x");
+//        }});
+//        Assertions.assertEquals(expected, getAnagramGroups(words));
+    }
+
+    private List<List<String>> getAnagramGroups(String[] words) {
+        Map<String, List<String>> ans = new HashMap<>();
+        for (String s : words) {
+            int[] count = new int[26];
+            for (char c : s.toCharArray()) {
+                count[c - 'a']++;
+            }
+            String key = Arrays.toString(count);
+            if (!ans.containsKey(key)) {
+                ans.put(key, new ArrayList<>());
+            }
+            ans.get(key).add(s);
+        }
+        return new ArrayList<>(ans.values());
+    }
 }
