@@ -22,53 +22,32 @@
  * All rights reserved.
  */
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.might.lambda.functional.implementation.Questions5;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.might.lambda.functional.implementation.GroupingBy;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Date: 1/10/2024
- * Time: 1:53 PM
+ * Date: 1/11/2024
+ * Time: 9:34 AM
  */
-@ExtendWith(MockitoExtension.class)
-public class TestQuestion5 {
-
-    private Stream<String> fullNameSrteam = Stream.of("John Lennon", "Paul McCartney", "George Harrison",
-            "Ringo Starr", "Pete Best", "Stuart Sutcliffe");
-
-    private Stream<String> nameStream = Stream.of("John", "Paul", "George", "John", "Paul", "John");
-
+public class GroupingByTest {
     @Test
-    public void testGetLongestNameReduce() {
-        String longestName = new Questions5().getLongestNameReduce(fullNameSrteam);
-        System.out.println(String.format("Test result for %s: %s", "testGetLongestNameReduce", longestName));
-        assertEquals("Stuart Sutcliffe", longestName);
+    public void stringsByLength() {
+        GroupingBy<String, Integer> stringIntegerGroupingBy = new GroupingBy<>(String::length);
+        Map<Integer, List<String>> results = Stream.of("a", "b", "cc", "dd")
+                .collect(stringIntegerGroupingBy);
+        System.out.println(String.format("Result for grouping string by length: %s", results));
+        assertEquals(2, results.size());
+        assertEquals(asList("a", "b"), results.get(1));
+        assertEquals(asList("cc", "dd"), results.get(2));
     }
 
-    @Test
-    public void testGetLongestNameCollector() {
-        String longestName = new Questions5().getLongestNameCollector(fullNameSrteam);
-        System.out.println(String.format("Test result for %s: %s", "testGetLongestNameCollector", longestName));
-        assertEquals("Stuart Sutcliffe", longestName);
-    }
-
-    @Test
-    public void testGetNamesCountMap() {
-        Map<String, Long> calculatedNames = new Questions5().getNameAmountMap(nameStream);
-        System.out.println(String.format("Calculated names: %s", calculatedNames));
-        assertEquals(3, calculatedNames.size());
-        assertEquals(Long.valueOf(3), calculatedNames.get("John"));
-        assertEquals(Long.valueOf(2), calculatedNames.get("Paul"));
-        assertEquals(Long.valueOf(1), calculatedNames.get("George"));
-    }
 }
 /*
  WITHOUT LIMITING THE FOREGOING, COPYING, REPRODUCTION, REDISTRIBUTION,
