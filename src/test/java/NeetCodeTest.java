@@ -1,10 +1,12 @@
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class NeetCodeTest {
 
@@ -32,24 +34,24 @@ public class NeetCodeTest {
 
     @Test
     public void checkTheAnagramGroups() {
-//        String[] words = new String[]{"act", "pots", "tops", "cat", "stop", "hat"};
-//        List<List<String>> expected = new ArrayList<>();
-//        expected.add(Arrays.asList("act","cat"));
-//        expected.add(Arrays.asList("stop", "pots", "tops"));
-//        expected.add(Arrays.asList("hat"));
-//        Assertions.assertArrayEquals(expected.toArray(), getAnagramGroups(words).toArray());
-//        words = new String[]{"x"};
-//        expected.clear();
-//        expected.add(new ArrayList() {{
-//            add("x");
-//        }});
-//        Assertions.assertEquals(expected, getAnagramGroups(words));
-//        words = new String[]{""};
-//        expected.clear();
-//        expected.add(new ArrayList<>() {{
-//            add("x");
-//        }});
-//        Assertions.assertEquals(expected, getAnagramGroups(words));
+        String[] words = new String[]{"act", "pots", "tops", "cat", "stop", "hat"};
+        List<List<String>> expected = new ArrayList<>();
+        expected.add(List.of("act", "cat"));
+        expected.add(List.of("pots", "tops", "stop"));
+        expected.add(List.of("hat"));
+        expected.sort(Comparator.comparingInt(List::size));
+        List<List<String>> result = new ArrayList<>();
+        result = getAnagramGroups(words);
+        result.sort(Comparator.comparingInt(List::size));
+        Assertions.assertArrayEquals(expected.toArray(), result.toArray());
+        words = new String[]{"x"};
+        expected.clear();
+        expected.add(List.of("x"));
+        Assertions.assertArrayEquals(expected.toArray(), getAnagramGroups(words).toArray());
+        words = new String[]{""};
+        expected.clear();
+        expected.add(List.of(""));
+        Assertions.assertArrayEquals(expected.toArray(), getAnagramGroups(words).toArray());
     }
 
     private List<List<String>> getAnagramGroups(String[] words) {
