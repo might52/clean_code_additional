@@ -1,25 +1,7 @@
-import static java.util.stream.Collectors.toCollection;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Stack;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.Vector;
+import java.util.*;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -30,8 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+
+import static java.util.stream.Collectors.toCollection;
 
 public class InterviewTest {
 
@@ -385,6 +367,18 @@ public class InterviewTest {
         public void a() {
             System.out.println("!!! a() called");
         }
+    }
+
+    @Test
+    public void testDuplicateArraysElements() {
+        int[] numsCase1 = {1, 2, 3, 3};
+        int[] numsCase2 = {1, 2, 3, 4};
+        Assertions.assertTrue(hasDuplicate(numsCase1));
+        Assertions.assertFalse(hasDuplicate(numsCase2));
+    }
+
+    private boolean hasDuplicate(int[] nums) {
+        return IntStream.of(nums).distinct().toArray().length < nums.length;
     }
 
 }
