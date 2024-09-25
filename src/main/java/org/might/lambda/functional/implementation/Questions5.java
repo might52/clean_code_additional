@@ -24,6 +24,7 @@
 package org.might.lambda.functional.implementation;
 
 import org.might.lambda.functional.examples.chapter1.Artist;
+import org.might.lambda.functional.examples.chapter5.StringCombiner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +35,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.maxBy;
+import static java.util.stream.Collectors.reducing;
 
 /**
  * Date: 1/9/2024
@@ -70,8 +74,10 @@ public class Questions5 {
         return names.collect(maxBy(comparing(String::length))).orElse("");
     }
 
-    public Map<String, Integer> getNameAmountMap(Stream<String> names) {
-        return new HashMap<>();
+    public Map<String, Long> getNameAmountMap(Stream<String> names) {
+//        return names.collect(groupingBy(name -> name, counting()));
+        return names.collect(groupingBy(name -> name,
+                reducing(0L, name -> 1L, Long::sum)));
     }
 
 }

@@ -46,13 +46,13 @@ public class TestQuestion5 {
 
     private Stream<String> nameStream = Stream.of("John", "Paul", "George", "John", "Paul", "John");
 
-    private Map<String, Integer> calcNames = new HashMap<>();
+    private Map<String, Long> calcNames = new HashMap<>();
 
     @BeforeEach
     public void prepareResult() {
-        calcNames.putIfAbsent("John", 3);
-        calcNames.putIfAbsent("Paul", 2);
-        calcNames.putIfAbsent("George", 1);
+        calcNames.putIfAbsent("John", 3L);
+        calcNames.putIfAbsent("Paul", 2L);
+        calcNames.putIfAbsent("George", 1L);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class TestQuestion5 {
 
     @Test
     public void testGetNamesCountMap() {
-        Map<String, Integer> calculatedName = new Questions5().getNameAmountMap(nameStream);
+        Map<String, Long> calculatedName = new Questions5().getNameAmountMap(nameStream);
         assertEquals(calcNames, calculatedName);
     }
 }
