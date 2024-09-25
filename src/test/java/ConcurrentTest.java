@@ -50,6 +50,7 @@ public class ConcurrentTest {
                     future.isDone(), future.isCancelled());
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                future.cancel(true);
             } catch (ExecutionException e) {
                 System.out.println("Something went wrong during execution process: " + e.getCause());
             }
