@@ -29,4 +29,15 @@ public class Chapter6 {
                 .reduce(1, (acc, x) -> x * acc);
     }
 
+    public static int slowSumOfSquares(List<Integer> values) {
+        return values.parallelStream()
+                .map(x -> x * x)
+                .reduce(0, (acc, x) -> acc + x);
+    }
+
+    public static int fastSumOfSquares(List<Integer> values) {
+        return values.parallelStream()
+                .mapToInt(x -> x * x)
+                .sum();
+    }
 }
