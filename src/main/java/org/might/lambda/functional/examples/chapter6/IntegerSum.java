@@ -1,8 +1,8 @@
 package org.might.lambda.functional.examples.chapter6;
 
-import org.openjdk.jmh.Main;
-import org.openjdk.jmh.annotations.*;
-import org.openjdk.jmh.runner.RunnerException;
+//import org.openjdk.jmh.Main;
+//import org.openjdk.jmh.annotations.*;
+//import org.openjdk.jmh.runner.RunnerException;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -14,9 +14,10 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
-@State(Scope.Benchmark)
-@BenchmarkMode(Mode.AverageTime)
+//@State(Scope.Benchmark)
+//@BenchmarkMode(Mode.AverageTime)
 public class IntegerSum {
+/*
 
     public static void main(String[] ignore) throws IOException, RunnerException {
         final String[] args = {
@@ -121,4 +122,5 @@ private int addIntegers(List<Integer> values) {
         return hashSet.stream().mapToInt(i -> i).sum();
     }
 
+*/
 }

@@ -1,8 +1,8 @@
 package org.might.lambda.functional.examples.chapter6;
 
-import org.openjdk.jmh.Main;
-import org.openjdk.jmh.annotations.*;
-import org.openjdk.jmh.runner.RunnerException;
+//import org.openjdk.jmh.Main;
+//import org.openjdk.jmh.annotations.*;
+//import org.openjdk.jmh.runner.RunnerException;
 
 import java.io.IOException;
 import java.util.Map;
@@ -13,9 +13,10 @@ import java.util.stream.IntStream;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingDouble;
 
-@State(Scope.Benchmark)
-@BenchmarkMode(Mode.AverageTime)
+//@State(Scope.Benchmark)
+//@BenchmarkMode(Mode.AverageTime)
 public class DiceRolls {
+/*
 
     private static final int N = 100000000;
 
@@ -60,5 +61,6 @@ public class DiceRolls {
             return firstThrow + secondThrow;
         };
     }
+*/
 
 }

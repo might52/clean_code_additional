@@ -23,35 +23,50 @@
  */
 package org.might.lambda.functional.implementation;
 
-import org.might.lambda.functional.examples.chapter1.Artist;
-import org.might.lambda.functional.examples.chapter5.StringCombiner;
-
-import java.util.List;
-import java.util.Optional;
-
 /**
  * Date: 1/9/2024
- * Time: 11:17 AM
+ * Time: 4:12 PM
  */
-public class Artists {
-    private List<Artist> artists;
+public class StringCombiner {
 
-    public Artists(List<Artist> artists) {
-        this.artists = artists;
+    private final String prefix;
+    private final String suffix;
+    private final String delim;
+    private final StringBuilder builder;
+
+    public StringCombiner(String delim, String prefix, String suffix) {
+        this.prefix = prefix;
+        this.suffix = suffix;
+        this.delim = delim;
+        this.builder = new StringBuilder();
     }
 
-    public Optional<Artist> getArtist(int index) {
-        if (index < 0 || index >= artists.size()) {
-            return Optional.empty();
+    public StringCombiner add (String word) {
+        if(!this.areAtStart()) {
+            this.builder.append(delim);
         }
-        return Optional.of(artists.get(index));
+        this.builder.append(word);
+
+        return this;
     }
 
-    public String getArtistName(int index) {
-        Optional<Artist> artist = getArtist(index);
-        return artist
-                .map(Artist::getName)
-                .orElse("unknown");
+    public StringCombiner merge (StringCombiner other) {
+        if(!other.equals(this)) {
+            if(!other.areAtStart() && !this.areAtStart()){
+                other.builder.insert(0, this.delim);
+            }
+            this.builder.append(other.builder);
+        }
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return prefix + builder.toString() + suffix;
+    }
+
+    private boolean areAtStart() {
+        return builder.length() == 0;
     }
 }
 /*

@@ -23,35 +23,55 @@
  */
 package org.might.lambda.functional.implementation;
 
-import org.might.lambda.functional.examples.chapter1.Artist;
-import org.might.lambda.functional.examples.chapter5.StringCombiner;
-
-import java.util.List;
-import java.util.Optional;
+import java.util.Collections;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 /**
  * Date: 1/9/2024
- * Time: 11:17 AM
+ * Time: 4:11 PM
  */
-public class Artists {
-    private List<Artist> artists;
+public class StringCollector implements Collector<String, StringCombiner, String> {
 
-    public Artists(List<Artist> artists) {
-        this.artists = artists;
+    private static final Set<Characteristics> characteristics = Collections.emptySet();
+
+    private final String delim;
+    private final String prefix;
+    private final String suffix;
+
+    public StringCollector(String delim, String prefix, String suffix) {
+        this.delim = delim;
+        this.prefix = prefix;
+        this.suffix = suffix;
     }
 
-    public Optional<Artist> getArtist(int index) {
-        if (index < 0 || index >= artists.size()) {
-            return Optional.empty();
-        }
-        return Optional.of(artists.get(index));
+    @Override
+    public Supplier<StringCombiner> supplier() {
+        return () -> new StringCombiner(delim, prefix, suffix);
     }
 
-    public String getArtistName(int index) {
-        Optional<Artist> artist = getArtist(index);
-        return artist
-                .map(Artist::getName)
-                .orElse("unknown");
+    @Override
+    public BiConsumer<StringCombiner, String> accumulator() {
+        return StringCombiner::add;
+    }
+
+    @Override
+    public BinaryOperator<StringCombiner> combiner() {
+        return StringCombiner::merge;
+    }
+
+    @Override
+    public Function<StringCombiner, String> finisher() {
+        return StringCombiner::toString;
+    }
+
+    @Override
+    public Set<Characteristics> characteristics() {
+        return characteristics;
     }
 }
 /*

@@ -24,35 +24,56 @@
 package org.might.lambda.functional.implementation;
 
 import org.might.lambda.functional.examples.chapter1.Artist;
-import org.might.lambda.functional.examples.chapter5.StringCombiner;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.maxBy;
 
 /**
  * Date: 1/9/2024
- * Time: 11:17 AM
+ * Time: 5:16 PM
  */
-public class Artists {
-    private List<Artist> artists;
+public class Questions5 {
 
-    public Artists(List<Artist> artists) {
-        this.artists = artists;
+    public List<String> getUpperCasesList(List<String> list) {
+        return list.stream().map(String::toUpperCase).collect(Collectors.toList());
     }
 
-    public Optional<Artist> getArtist(int index) {
-        if (index < 0 || index >= artists.size()) {
-            return Optional.empty();
-        }
-        return Optional.of(artists.get(index));
+
+    public int getCount(List<Artist> artists) {
+        return artists.stream()
+                .filter(artist -> artist.isFrom("London"))
+                .map(artist -> Long.valueOf(artist.getMembers().count()).intValue())
+                .reduce(0, Integer::sum);
     }
 
-    public String getArtistName(int index) {
-        Optional<Artist> artist = getArtist(index);
-        return artist
-                .map(Artist::getName)
-                .orElse("unknown");
+    public List<Artist> concatLists(List<Artist> artists) {
+        return artists.stream()
+                .flatMap(Artist::getMembers)
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
     }
+
+    public String getLongestNameReduce(Stream<String> names) {
+        return names.reduce("", (left, right) -> left.length() < right.length() ? right : left);
+    }
+
+    public String getLongestNameCollector(Stream<String> names) {
+        return names.collect(maxBy(comparing(String::length))).orElse("");
+    }
+
+    public Map<String, Integer> getNameAmountMap(Stream<String> names) {
+        return new HashMap<>();
+    }
+
 }
 /*
  WITHOUT LIMITING THE FOREGOING, COPYING, REPRODUCTION, REDISTRIBUTION,

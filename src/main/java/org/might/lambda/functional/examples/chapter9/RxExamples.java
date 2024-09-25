@@ -2,14 +2,15 @@ package org.might.lambda.functional.examples.chapter9;
 
 
 import org.might.lambda.functional.examples.chapter1.Artist;
-import rx.Observable;
-import rx.Observer;
+//import rx.Observable;
+//import rx.Observer;
 
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
 public class RxExamples {
+/*
 
     private final List<Artist> savedArtists;
     private final List<String> savedArtistNames;
@@ -67,5 +68,6 @@ public class RxExamples {
 // END error_observable
 
     }
+*/
 
 }
