@@ -2,6 +2,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
@@ -14,6 +15,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.jupiter.api.Test;
 
 public class ConcurrentTest {
@@ -211,5 +213,27 @@ public class ConcurrentTest {
             10, TimeUnit.SECONDS);
     }
 
+    private boolean checkMail(Set<String> hosts, long timeout, TimeUnit unit) throws InterruptedException {
+        ExecutorService exec = Executors.newCachedThreadPool();
+        final AtomicBoolean hasNewMail = new AtomicBoolean(false);
+        try {
+            for (final String host : hosts) {
+                exec.execute(new Runnable() {
+                    public void run() {
+                        if (checkMail(host)) {
+                            hasNewMail.set(true);
+                        }
+                    }
+                });
+            }
+        } finally {
+            exec.shutdown();
+            exec.awaitTermination(timeout, unit);
+        }
+        return hasNewMail.get();
+    }
 
+    private boolean checkMail(String host) {
+        return true;
+    }
 }
