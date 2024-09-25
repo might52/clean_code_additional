@@ -5,9 +5,6 @@
 
 package org.might.lambda.functional.examples.chapter1;
 
-/**
- * @author richard
- */
 public final class Track {
     
     private final String name;

@@ -18,6 +18,6 @@ public class CaptureCompileError {
     }
 
     private String getUserName() {
-        return "RICHARD";
+        return "USER_NAME";
     }
 }

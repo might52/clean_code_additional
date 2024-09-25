@@ -8,10 +8,6 @@ package org.might.lambda.functional.examples.chapter1;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author richard
- */
 public class Chapter1 extends MusicChapter {
 
     public List<String> getNamesOfArtists_Lambda() {

@@ -8,10 +8,6 @@ package org.might.lambda.functional.examples.chapter1;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Richard Warburton
- */
 public abstract class MusicChapter {
     
     protected final List<Artist> artists;

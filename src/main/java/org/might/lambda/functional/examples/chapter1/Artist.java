@@ -13,11 +13,6 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
-/**
- * Domain class for a popular music artist.
- * 
- * @author Richard Warburton
- */
 public final class Artist {
     
     private String name;

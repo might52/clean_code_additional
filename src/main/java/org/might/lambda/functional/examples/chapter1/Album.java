@@ -13,12 +13,8 @@ import java.util.stream.Stream;
 import static java.util.Collections.unmodifiableList;
 import static java.util.stream.Collectors.toList;
 
-/**
- *
- * @author richard
- */
 public final class Album implements Performance {
-    
+
     private String name;
     private List<Track> tracks;
     private List<Artist> musicians;
