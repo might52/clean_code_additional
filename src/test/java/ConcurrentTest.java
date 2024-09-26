@@ -265,4 +265,14 @@ public class ConcurrentTest {
             Thread.currentThread().interrupt();
         }
     }
+
+    @Test
+    public void changeCorePoolSize() {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        if (executorService instanceof ThreadPoolExecutor) {
+            ((ThreadPoolExecutor) executorService).setCorePoolSize(10);
+        } else {
+            throw new AssertionError("Something went wrong during change the core pool size");
+        }
+    }
 }
