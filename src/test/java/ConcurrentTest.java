@@ -12,7 +12,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -246,5 +248,21 @@ public class ConcurrentTest {
             }
         });
         System.out.println("Shutdown hook exit");
+    }
+
+    @Test
+    public void createThreadPoolExecutorWithCallRunsPolicy() {
+        try (ThreadPoolExecutor executor = new ThreadPoolExecutor(
+            NUMBER_OF_THREADS,
+            NUMBER_OF_THREADS,
+            0L,
+            TimeUnit.MILLISECONDS,
+            new LinkedBlockingQueue<Runnable>(NUMBER_OF_THREADS))) {
+            executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+            executor.shutdown();
+            executor.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }
