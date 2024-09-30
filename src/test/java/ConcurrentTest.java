@@ -297,4 +297,31 @@ public class ConcurrentTest {
         Assertions.assertFalse(bb.isEmpty());
     }
 
+    @Test
+    public void testTakeBlocksWhenEmpty() {
+        final BoundedBuffer<Integer> bb = new BoundedBuffer<>(10);
+        Thread taker = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    int unused = bb.take();
+                    Assertions.fail();
+                } catch (InterruptedException e) {
+                }
+            }
+        });
+        try {
+            taker.start();
+            Thread.sleep(10000);
+            taker.interrupt();
+            taker.join(10000);
+            Assertions.assertFalse(taker.isAlive());
+        } catch (Exception e) {
+            Assertions.fail();
+        }
+    }
+
+    @Test
+    public void testPutTake() {
+        new PutTakeTest(10, 10, 100000).testProducerConsumerConcurrent();
+    }
 }
