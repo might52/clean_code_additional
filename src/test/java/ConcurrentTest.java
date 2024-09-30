@@ -1,4 +1,6 @@
-import static java.util.concurrent.TimeUnit.SECONDS;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import resources.BoundedBuffer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.junit.jupiter.api.Test;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ConcurrentTest {
 
@@ -275,4 +278,23 @@ public class ConcurrentTest {
             throw new AssertionError("Something went wrong during change the core pool size");
         }
     }
+
+
+    @Test
+    public void testIsEmptyWhenConstructed() {
+        BoundedBuffer<Integer> bb = new BoundedBuffer<>(10);
+        Assertions.assertTrue(bb.isEmpty());
+        Assertions.assertFalse(bb.isFull());
+    }
+
+    @Test
+    public void testIsFullAfterPuts() throws InterruptedException {
+        BoundedBuffer<Integer> bb = new BoundedBuffer<>(10);
+        for (int i = 0; i < 10; i++) {
+            bb.put(i);
+        }
+        Assertions.assertTrue(bb.isFull());
+        Assertions.assertFalse(bb.isEmpty());
+    }
+
 }
