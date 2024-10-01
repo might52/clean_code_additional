@@ -342,5 +342,428 @@ public class ConcurrentTest {
                 Thread.sleep(1000);
             }
         }
+        /*
+            Capacity: 1
+            Pairs: 1
+            Start first await
+            Start second await
+            Throughput: 31299 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 32063 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 2
+            Start first await
+            Start second await
+            Throughput: 50033 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 50985 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 4
+            Start first await
+            Start second await
+            Throughput: 54570 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 52346 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 8
+            Start first await
+            Start second await
+            Throughput: 53546 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 52520 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 16
+            Start first await
+            Start second await
+            Throughput: 53307 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 53333 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 32
+            Start first await
+            Start second await
+            Throughput: 52198 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 51750 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 64
+            Start first await
+            Start second await
+            Throughput: 51810 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 52545 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 128
+            Start first await
+            Start second await
+            Throughput: 54931 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 55525 ns/item
+            Start assertions
+            Shutting down pool
+
+            Capacity: 10
+            Pairs: 1
+            Start first await
+            Start second await
+            Throughput: 2081 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 2238 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 2
+            Start first await
+            Start second await
+            Throughput: 4818 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 4893 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 4
+            Start first await
+            Start second await
+            Throughput: 4278 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 4322 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 8
+            Start first await
+            Start second await
+            Throughput: 4447 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 4525 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 16
+            Start first await
+            Start second await
+            Throughput: 4579 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 4458 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 32
+            Start first await
+            Start second await
+            Throughput: 4482 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 4507 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 64
+            Start first await
+            Start second await
+            Throughput: 4702 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 4767 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 128
+            Start first await
+            Start second await
+            Throughput: 4731 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 4711 ns/item
+            Start assertions
+            Shutting down pool
+
+            Capacity: 100
+            Pairs: 1
+            Start first await
+            Start second await
+            Throughput: 273 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 272 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 2
+            Start first await
+            Start second await
+            Throughput: 436 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 492 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 4
+            Start first await
+            Start second await
+            Throughput: 455 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 434 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 8
+            Start first await
+            Start second await
+            Throughput: 489 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 450 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 16
+            Start first await
+            Start second await
+            Throughput: 519 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 480 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 32
+            Start first await
+            Start second await
+            Throughput: 464 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 521 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 64
+            Start first await
+            Start second await
+            Throughput: 471 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 487 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 128
+            Start first await
+            Start second await
+            Throughput: 464 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 465 ns/item
+            Start assertions
+            Shutting down pool
+
+            Capacity: 1000
+            Pairs: 1
+            Start first await
+            Start second await
+            Throughput: 265 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 321 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 2
+            Start first await
+            Start second await
+            Throughput: 331 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 206 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 4
+            Start first await
+            Start second await
+            Throughput: 182 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 179 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 8
+            Start first await
+            Start second await
+            Throughput: 161 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 159 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 16
+            Start first await
+            Start second await
+            Throughput: 201 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 198 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 32
+            Start first await
+            Start second await
+            Throughput: 225 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 218 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 64
+            Start first await
+            Start second await
+            Throughput: 201 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 200 ns/item
+            Start assertions
+            Shutting down pool
+
+            Pairs: 128
+            Start first await
+            Start second await
+            Throughput: 228 ns/item
+            Start assertions
+            Shutting down pool
+
+            Start first await
+            Start second await
+            Throughput: 212 ns/item
+            Start assertions
+            Shutting down pool
+
+        */
+
     }
 }
