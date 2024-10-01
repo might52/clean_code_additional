@@ -1,7 +1,11 @@
-import static java.util.concurrent.TimeUnit.SECONDS;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import resources.BoundedBuffer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
@@ -18,9 +22,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import resources.BoundedBuffer;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ConcurrentTest {
 
@@ -766,4 +773,63 @@ public class ConcurrentTest {
         */
 
     }
+
+    @Test
+    public void testReentrantLock() {
+        Lock lock = new ReentrantLock();
+        try {
+            lock.lockInterruptibly();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+
+    @Test
+    public void testReentrantReadWriteLock() {
+        class ReadWriteMap<K, V> {
+            private final Map<K, V> map;
+            private final ReadWriteLock lock = new ReentrantReadWriteLock();
+            private final Lock readLock = lock.readLock();
+            private final Lock writeLock = lock.writeLock();
+
+            public ReadWriteMap(Map<K, V> map) {
+                this.map = map;
+            }
+
+            public V put(K key, V value) {
+                writeLock.lock();
+                System.out.println("acquire writeock");
+                try {
+                    return map.put(key, value);
+                } finally {
+                    System.out.println("release writeock");
+                    writeLock.unlock();
+                }
+            }
+
+            public V get(Object key) {
+                readLock.lock();
+                System.out.println("acquire readlock");
+                try {
+                    return map.get(key);
+                } finally {
+                    System.out.println("release readlock");
+                    readLock.unlock();
+                }
+            }
+        }
+        ;
+
+        ReadWriteMap<String, String> map = new ReadWriteMap<>(new HashMap<>());
+        map.put("1", "1");
+        map.put("2", "2");
+        map.put("3", "3");
+        map.get("1");
+        map.get("2");
+        map.get("3");
+    }
+
 }
