@@ -1,6 +1,4 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import resources.BoundedBuffer;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +18,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static java.util.concurrent.TimeUnit.SECONDS;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import resources.BoundedBuffer;
 
 public class ConcurrentTest {
 
@@ -322,6 +321,26 @@ public class ConcurrentTest {
 
     @Test
     public void testPutTake() {
-        new PutTakeTest(10, 10, 100000).testProducerConsumerConcurrent();
+        PutTakeTest test = new PutTakeTest(10, 10, 100000);
+        test.testProducerConsumerConcurrent();
+        test.poolShutdown();
+    }
+
+    @Test
+    public void testTimedPutTakeViaDriver() throws Exception {
+        int tpd = 100000;
+        for (int cap = 1; cap <= 1000; cap *= 10) {
+            System.out.println("Capacity: " + cap);
+            for (int pairs = 1; pairs <= 128; pairs *= 2) {
+                PutTakeTest t = new PutTakeTest(cap, pairs, tpd);
+                System.out.println("Pairs: " + pairs + "\t");
+                t.testProducerConsumerConcurrent();
+                System.out.println("\t");
+                Thread.sleep(1000);
+                t.testProducerConsumerConcurrent();
+                System.out.println();
+                Thread.sleep(1000);
+            }
+        }
     }
 }
