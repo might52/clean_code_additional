@@ -821,7 +821,6 @@ public class ConcurrentTest {
                 }
             }
         }
-        ;
 
         ReadWriteMap<String, String> map = new ReadWriteMap<>(new HashMap<>());
         map.put("1", "1");
