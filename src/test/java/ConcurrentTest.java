@@ -831,4 +831,18 @@ public class ConcurrentTest {
         map.get("3");
     }
 
+
+    private void stateDependentWait() throws InterruptedException {
+        Object lock = new Object();
+        boolean condition = true;
+        // Условный предикат должен быть защищен замком.
+        synchronized (lock) {
+            while (!condition) {
+                lock.wait();
+                // объект в нужном состоянии.
+            }
+
+            condition = false;
+        }
+    }
 }
