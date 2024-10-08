@@ -1,6 +1,7 @@
 package resources;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 public class ConcurrentStack<E> {
 
@@ -39,4 +40,16 @@ public class ConcurrentStack<E> {
         }
     }
 
+    private static class NodeUpdater<E> {
+
+        public final E item;
+        public volatile NodeUpdater<E> next;
+
+        public NodeUpdater(E item) {
+            this.item = item;
+        }
+    }
+
+    private static final AtomicReferenceFieldUpdater<NodeUpdater, NodeUpdater> nextUpdater =
+        AtomicReferenceFieldUpdater.newUpdater(NodeUpdater.class, NodeUpdater.class, "next");
 }
