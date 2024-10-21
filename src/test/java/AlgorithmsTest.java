@@ -1,7 +1,9 @@
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AlgorithmsTest {
 
@@ -72,5 +74,23 @@ public class AlgorithmsTest {
             }
         }
         return null;
+    }
+
+    @Test
+    public void testPrivateAccess() {
+        class Victim {
+            private int field = 42;
+        }
+
+        Victim victim = new Victim();
+        try {
+            Field field = Victim.class.getDeclaredField("field");
+            field.setAccessible(true);
+            int fieldValue = (int) field.get(victim);
+            System.out.println(fieldValue);
+            Assertions.assertEquals(42, fieldValue);
+        } catch (NoSuchFieldException | IllegalAccessException ex) {
+            ex.printStackTrace();
+        }
     }
 }
