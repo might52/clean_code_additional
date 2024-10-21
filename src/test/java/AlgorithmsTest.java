@@ -15,6 +15,43 @@ public class AlgorithmsTest {
 
     }
 
+    @Test
+    public void SelectionSortTest() {
+        List<Integer> list = new ArrayList<>();
+        List<Integer> expected = new ArrayList<>();
+        for (int i = 99; i >= 0; i--) {
+            list.add(i);
+        }
+        for (int i = 0; i < 100; i++) {
+            expected.add(i);
+        }
+
+        Assertions.assertArrayEquals(expected.toArray(), selectionSort(list).toArray());
+    }
+
+    private List<Integer> selectionSort(List<Integer> list) {
+        List<Integer> result = new ArrayList<>();
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+            int smallestIndex = findMinInteger(list);
+            result.add(list.get(smallestIndex));
+            list.remove(smallestIndex);
+        }
+        return result;
+    }
+
+    private Integer findMinInteger(List<Integer> list) {
+        int smallIndex = 0;
+        int smallValue = list.get(smallIndex);
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i) < smallValue) {
+                smallValue = list.get(i);
+                smallIndex = i;
+            }
+        }
+        return smallIndex;
+    }
+
     private Integer binarySearch(List<Integer> list, Integer item) {
         int low = 0;
         int counter = 0;
