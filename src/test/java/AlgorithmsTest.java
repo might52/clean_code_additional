@@ -1,9 +1,8 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AlgorithmsTest {
 
@@ -92,5 +91,15 @@ public class AlgorithmsTest {
         } catch (NoSuchFieldException | IllegalAccessException ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Test
+    public void testGenerics() {
+        List<String> strings = new ArrayList<>();
+        List<Object> objects = new ArrayList<>();
+        objects = (List) strings;
+        System.out.println(objects);
+        objects.add(Integer.valueOf(1));
+        System.out.println(objects);
     }
 }
