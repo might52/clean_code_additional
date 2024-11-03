@@ -69,4 +69,29 @@ public class NeetCodeTest {
         }
         return new ArrayList<>(ans.values());
     }
+
+    @Test
+    public void frequentKElementsTest() {
+        int[] nums = new int[]{1, 2, 2, 3, 3, 3};
+        int[] expected = new int[]{3, 2};
+        int expectedCount = 2;
+        Assertions.assertArrayEquals(expected, frequentKElements(nums, expectedCount));
+        nums = new int[]{7, 7};
+        expected = new int[]{7};
+        expectedCount = 1;
+        Assertions.assertArrayEquals(expected, frequentKElements(nums, expectedCount));
+    }
+
+    private int[] frequentKElements(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+        }
+        List<int[]> result = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            result.add(new int[]{entry.getKey(), entry.getValue()});
+        }
+        result.sort((a, b) -> b[1] - a[1]);
+        return result.stream().mapToInt(el -> el[0]).limit(k).toArray();
+    }
 }
